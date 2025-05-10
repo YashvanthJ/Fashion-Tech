@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FashionTech AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+</head>
+<body>
+  <nav>
+    <div id="threejs-container"></div>
+
+    <!-- Dashboard Timer -->
+    <div class="dashboard-timer">
+        <span id="current-time"></span>
+    </div>
+
+    <div class="logo">
+      <img src="images/logo1.png" alt="FashionTech Logo" />
+    </div>
+    <div class="nav-buttons">
+      <button id="home-toggle"><i class="fas fa-home"></i> Home</button>
+      <button id="category-toggle"><i class="fas fa-list"></i> Category</button>
+      <button id="active-offers-toggle"><i class="fas fa-bolt"></i> Active Offers</button>
+      <button id="virtual-try-on-toggle"><i class="fas fa-tshirt"></i> Virtual Try-On</button>
+      <button id="location-toggle"><i class="fas fa-map-marker-alt"></i> Locations</button>
+      <button id="about-toggle"><i class="fas fa-info-circle"></i> About</button>
+    </div>
+  </nav>
+
+  <!-- Home Page -->
+  <section id="home-page" class="page active">
+    <div class="content">
+      <h1>Welcome to FashionTech AI</h1>
+      <div class="auth-box">
+        <form id="login-form">
+          <input type="text" id="first-name" placeholder="First Name" required />
+          <input type="text" id="last-name" placeholder="Last Name" required />
+          <input type="email" id="email" placeholder="Email" required />
+          <button type="submit">Sign In</button>
+          <button type="button" id="logout-btn">Sign Out</button>
+        </form>
+      </div>
+      <div id="login-details" class="login-details">
+        <h2><i class="fas fa-users"></i> Active Users</h2>
+        <ul id="login-list"></ul>
+      </div>
+    </div>
+
+  <!-- Fortune Word of the Day -->
+  <div class="fortune-word">
+    <h3>Your Fashion Fortune for Today</h3>
+    <p id="fortune-text">Loading your inspirational fashion quote...</p>
+</div>
+</div>
+</div>
+  </section>
+
+  <!-- Category Page -->
+  <section id="category-page" class="page">
+    <h2><i class="fas fa-tags"></i> Fashion Categories</h2>
+    <div class="category-grid">
+      <button class="category-btn male-btn">
+        <i class="fas fa-male"></i>
+        <span>Men's Fashion</span>
+      </button>
+      <button class="category-btn female-btn">
+        <i class="fas fa-female"></i>
+        <span>Women's Fashion</span>
+      </button>
+    </div>
+
+    <div class="dress-display" id="dress-display"></div>
+
+    <div class="brands-section" id="brands-section">
+      <h3><i class="fas fa-briefcase"></i> Popular Brands</h3>
+      <div class="brand-links">
+        <div class="male-brands" style="display: none;">
+          <h4>Men's Brands</h4>
+          <a href="https://www.zara.com/us/en/man-mkt534.html" target="_blank">Zara (Men)</a>
+          <a href="https://www2.hm.com/en_gb/men.html" target="_blank">H&M (Men)</a>
+          <a href="https://www.calvinklein.us/en/men" target="_blank">Calvin Klein (Men)</a>
+        </div>
+        <div class="female-brands" style="display: none;">
+          <h4>Women's Brands</h4>
+          <a href="https://www.zara.com/us/en/woman-mkt1000.html" target="_blank">Zara (Women)</a>
+          <a href="https://www2.hm.com/en_gb/women.html" target="_blank">H&M (Women)</a>
+          <a href="https://www.calvinklein.us/en/women" target="_blank">Calvin Klein (Women)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Active Offers Page -->
+  <div id="active-offers-page" class="page">
+    <div class="container">
+        <div class="active-offers-section">
+            <h2>🔥 Exclusive Active Offers</h2>
+            
+            <div class="gender-toggle">
+                <button class="male-btn active">Men's Offers</button>
+                <button class="female-btn">Women's Offers</button>
+            </div>
+            <div class="brands-section">
+              <h3>Featured Brands</h3>
+              <div class="brand-links">
+                  <div class="male-brands">
+                      <a href="https://www.zara.com/us/en/man-shoes-special-prices-l799.html" target="_blank" class="brand-link">Zara Men</a>
+                      <a href="https://www2.hm.com/en_us/men.html" target="_blank" class="brand-link">H&M Men</a>
+                      <a href="https://www.calvinklein.us/en/men" target="_blank" class="brand-link">CK Men</a>
+                  </div>
+                  <div class="female-brands" style="display:none">
+                      <a href="https://www.zara.com/us/en/woman-mkt1000.html" target="_blank" class="brand-link">Zara Women</a>
+                      <a href="https://www2.hm.com/en_us/women.html" target="_blank" class="brand-link">H&M Women</a>
+                      <a href="https://www.calvinklein.us/en/women" target="_blank" class="brand-link">CK Women</a>
+                  </div>
+              </div>
+          </div>
+          <div class="active-offers-grid" id="active-offers-container">
+            <!-- Offers will be dynamically inserted here by JavaScript -->
+        </div>
+    </div>
+</div>
+</div>
+
+  <!-- Virtual Try-On Page -->
+  <section id="virtual-try-on-page" class="page">
+    <h2><i class="fas fa-magic"></i> AI Dressing Room</h2>
+    <div class="try-on-container">
+      <div class="input-section">
+        <div class="camera-box">
+          <input type="file" accept="image/*" id="file-input" hidden />
+          <button id="upload-btn" class="action-btn"><i class="fas fa-upload"></i> Upload Photo</button>
+          <button id="camera-btn" class="action-btn"><i class="fas fa-camera"></i> Open Camera</button>
+          <video id="camera-view"></video>
+          <button id="capture-btn" class="action-btn" hidden><i class="fas fa-camera-retro"></i> Capture</button>
+          <canvas id="capture-canvas" hidden></canvas>
+        </div>
+        <button id="generate-btn" class="action-btn primary"><i class="fas fa-robot"></i> Generate AI Outfit</button>
+      </div>
+      <div class="result-section">
+        <div class="result-box">
+          <img id="user-image" alt="User photo" />
+          <img id="ai-output" alt="AI generated outfit" />
+          <div class="loading-overlay" id="loading-spinner"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Locations Page -->
+  <section id="location-page" class="page">
+    <h2><i class="fas fa-map-marked-alt"></i> Nearby Stores</h2>
+    <div class="location-box">
+      <button id="locate-btn" class="action-btn"><i class="fas fa-location-arrow"></i> Find Stores</button>
+      <div id="location-display">
+        <p id="location-status">Click the button to share your location.</p>
+        <p id="latitude"></p>
+        <p id="longitude"></p>
+      </div>
+      <div id="map"></div>
+    </div>
+  </section>
+
+  <!-- About Page -->
+  <section id="about-page" class="page">
+    <div class="about-content">
+      <h2><i class="fas fa-info-circle"></i> About Us</h2>
+      <p>This app saves you time by allowing you to explore fashion brands and categories virtually at home. No more long trial rooms!</p>
+      <h3>Welcome to Yash FashionTech World</h3>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_KEY&callback=initMap&libraries=places">
+  </script>
+</body>
+</html>
